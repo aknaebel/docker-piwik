@@ -30,7 +30,6 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
 
  && echo "date.timezone = 'UTC'" > /etc/php7/php.ini \
  && echo "short_open_tag = 0" >> /etc/php7/php.ini \
- && echo "sendmail_path = /usr/sbin/ssmtp -t" >> /etc/php7/php.ini \
  && echo "always_populate_raw_post_data=-1" >> /etc/php7/php.ini \
  && echo "geoip.custom_directory=/var/www/piwik/misc" >> /etc/php7/php.ini \
 
