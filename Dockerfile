@@ -5,7 +5,7 @@ MAINTAINER Alain Knaebel <alain.knaebel@aknaebel.fr>
 RUN echo "http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
  && echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && echo "http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
- && BUILD_DEPS="gnupg tar build-base autoconf automake libtool" \
+ && BUILD_DEPS="gnupg tar build-base autoconf automake libtool geoip-dev" \
 
  && apk upgrade --update\
  && apk add ca-certificates openssl \
@@ -16,9 +16,12 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
       mysql-client \
       curl \
       zip unzip \
-      bash \
+      bash geoip \
       ${BUILD_DEPS} \
- && sed -i "$ s|\-n||g" /usr/bin/pecl && pecl install geoip \
+ && curl -fsSL -o /tmp/geoip.tgz https://pecl.php.net/get/geoip \
+ && cd /tmp && tar xzf /tmp/geoip.tgz && cd geoip-* \
+ && phpize7 && ./configure --with-php-config=/usr/bin/php-config7 \
+ && make && make install \
  && echo "extension=geoip.so" > /etc/php7/conf.d/00_geoip.ini \
 
  && apk del ${BUILD_DEPS} php7-pear php7-dev \
@@ -34,7 +37,7 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
  && echo "geoip.custom_directory=/var/www/piwik/misc" >> /etc/php7/php.ini \
 
  && curl -fsSL -o /tmp/piwik.zip https://builds.piwik.org/piwik.zip \
- && cd /tmp/ && unzip piwik.zip
+ && cd /tmp/ && unzip piwik.zip && rm piwik.zip
 
 WORKDIR /var/www/piwik
 VOLUME /var/www/piwik
