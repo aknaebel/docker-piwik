@@ -5,7 +5,7 @@ MAINTAINER Alain Knaebel <alain.knaebel@aknaebel.fr>
 RUN echo "http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
  && echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && echo "http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
- && BUILD_DEPS="gnupg tar build-base autoconf automake libtool geoip-dev" \
+ && BUILD_DEPS="gnupg build-base autoconf automake libtool geoip-dev" \
 
  && apk upgrade --update\
  && apk add ca-certificates openssl \
@@ -15,7 +15,7 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
       bzip2 \
       mysql-client \
       curl \
-      zip unzip \
+      zip unzip tar \
       bash geoip \
       ${BUILD_DEPS} \
  && curl -fsSL -o /tmp/geoip.tgz https://pecl.php.net/get/geoip \
